@@ -10,7 +10,7 @@ export default function App({ Component, pageProps }) {
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.svg" />
       </Head>
 
       <MantineProvider
@@ -26,6 +26,12 @@ export default function App({ Component, pageProps }) {
           },
 
           components: {
+            Container: {
+              defaultProps: {
+                size: 'xl',
+                p: 'md',
+              },
+            },
             Title: {
               defaultProps: {
                 sx: (theme) => ({
