@@ -83,10 +83,7 @@ const socialLinks = [
 const useStyles = createStyles((theme) => ({
   footer: {
     marginTop: 120,
-    backgroundColor:
-      theme.colorScheme === 'dark'
-        ? theme.colors.dark[6]
-        : theme.colors.gray[0],
+    backgroundColor: theme.colors.dark[6],
     borderTop: `1px solid ${theme.colors.dark[5]}`,
   },
 
@@ -257,10 +254,10 @@ export function Footer() {
         <Stack spacing="xs" sx={{ width: '100%' }}>
           <Text size="sm" m={0}>
             {new Date().getFullYear()} Grupo Cultural Adimó. CNPJ
-            XX.XXX.XXX/XXXX-XX.
+            09.483.532/0001-00.
           </Text>
           <Text size="sm" m={0}>
-            Rua Tal, Bairro Tal, Nº - CEP - Picos, PI.
+            Rua Cel. Francisco Santos, Centro, 252, 64600-096 - Picos, PI.
           </Text>
         </Stack>
 
@@ -275,7 +272,6 @@ export function Footer() {
               variant="outline"
               compact
               size="md"
-              radius="md"
               leftIcon={link.icon}
             >
               {link.label}
@@ -287,15 +283,16 @@ export function Footer() {
       <Container className={classes.afterFooter}>
         <Text color="dimmed" size="sm" m={0}>
           Site desenvolvido por{' '}
-          <DevLink name={'Luís Clício'} url={'http://github.com/darktechlc'} />,{' '}
+          <DevLink name={'Luís Clício'} url={'https://github.com/darktechlc'} />
+          ,{' '}
           <DevLink
             name={'José Wanderlei'}
-            url={'http://github.com/wanderleisi'}
+            url={'https://github.com/wanderleisi'}
           />{' '}
           e{' '}
           <DevLink
             name={'Vinícius de Sousa'}
-            url={'http://github.com/viniciussousa891'}
+            url={'https://github.com/viniciussousa891'}
           />
           .
         </Text>

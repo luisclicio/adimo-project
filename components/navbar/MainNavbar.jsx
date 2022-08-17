@@ -142,12 +142,12 @@ export function MainNavbar() {
             </Link>
           </Group>
 
-          <Group component="nav" spacing={4} className={classes.linksDesktop}>
+          <Group component="nav" spacing={8} className={classes.linksDesktop}>
             {links.map((link) => (
               <Link key={link.url} href={link.url}>
                 <a
                   className={cx(classes.linkItem, {
-                    [classes.linkItemActive]: router.pathname === link.url,
+                    [classes.linkItemActive]: router.asPath === link.url,
                   })}
                 >
                   {link.label}
@@ -175,7 +175,7 @@ export function MainNavbar() {
                 <Link key={link.url} href={link.url} passHref>
                   <a
                     className={cx(classes.linkItem, classes.linkItemMobile, {
-                      [classes.linkItemActive]: router.pathname === link.url,
+                      [classes.linkItemActive]: router.asPath === link.url,
                     })}
                   >
                     {link.label}
