@@ -243,7 +243,7 @@ export function Footer() {
           </Group>
 
           <Text className={classes.description}>
-            Esporte e cultura uma questão de cidadania.
+            Educação, esporte e cultura uma questão de cidadania.
           </Text>
         </Stack>
 

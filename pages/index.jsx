@@ -101,8 +101,8 @@ function HeroSection({ carrouselImages }) {
     <Box component="section" className={classes.inner}>
       <div className={classes.content}>
         <Title className={classes.title}>
-          <span className={classes.highlight}>Projeto Adimó:</span> esporte e
-          cultura uma questão de cidadania
+          <span className={classes.highlight}>Projeto Adimó:</span> educação,
+          esporte e cultura uma questão de cidadania
         </Title>
 
         <Text mt="md" size="lg">

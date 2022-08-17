@@ -46,7 +46,7 @@ const useStyles = createStyles((theme) => {
       } 0%, ${theme.colors[theme.primaryColor][8]} 100%)`,
       border: '1px solid transparent',
       padding: theme.spacing.xl,
-      flex: '0 0 280px',
+      flex: '0 0 320px',
 
       [BREAKPOINT]: {
         marginBottom: theme.spacing.md,
