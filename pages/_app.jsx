@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }) {
         withNormalizeCSS
         theme={{
           colorScheme: 'dark',
-          defaultRadius: 'lg',
+          defaultRadius: 'md',
           primaryColor: 'red',
           defaultGradient: {
             from: 'red.6',
@@ -48,7 +48,22 @@ export default function App({ Component, pageProps }) {
             Button: {
               defaultProps: {
                 variant: 'gradient',
-                size: 'lg',
+                size: 'md',
+              },
+            },
+            TextInput: {
+              defaultProps: {
+                size: 'md',
+              },
+            },
+            PasswordInput: {
+              defaultProps: {
+                size: 'md',
+              },
+            },
+            Textarea: {
+              defaultProps: {
+                size: 'md',
               },
             },
           },
