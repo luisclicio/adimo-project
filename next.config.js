@@ -19,7 +19,7 @@ const nextConfig = {
       },
       {
         source: '/noticias',
-        destination: '/posts',
+        destination: '/articles',
       },
       {
         source: '/parceiros',
