@@ -8,6 +8,7 @@ import {
   SimpleGrid,
   createStyles,
   Stack,
+  Autocomplete,
 } from '@mantine/core';
 import { IconClock, IconMail, IconMapPin, IconPhone } from '@tabler/icons';
 
@@ -132,10 +133,19 @@ export function ContactSection({ ...props }) {
           />
         </SimpleGrid>
 
-        <TextInput
+        <Autocomplete
           mt="md"
           label="Assunto"
           placeholder="Ex: Tirar dúvidas, Agendar visita, etc."
+          data={[
+            'Matrícula',
+            'Tirar dúvidas',
+            'Tornar-se padrinho',
+            'Tornar-se voluntário',
+            'Sugestão',
+            'Agendar visita',
+            'Outros',
+          ]}
           required
         />
 

@@ -51,6 +51,11 @@ export default function App({ Component, pageProps }) {
                 size: 'md',
               },
             },
+            Autocomplete: {
+              defaultProps: {
+                size: 'md',
+              },
+            },
             TextInput: {
               defaultProps: {
                 size: 'md',
