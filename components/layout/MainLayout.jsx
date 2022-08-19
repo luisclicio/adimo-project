@@ -3,6 +3,7 @@ import { Container } from '@mantine/core';
 
 import { MainNavbar } from '../navbar/MainNavbar';
 import { Footer } from '../Footer';
+import { ContactDialog } from '../ContactDialog';
 
 export function MainLayout({ title, children }) {
   return (
@@ -14,6 +15,8 @@ export function MainLayout({ title, children }) {
       <MainNavbar />
 
       <Container>{children}</Container>
+
+      <ContactDialog />
 
       <Footer />
     </>
