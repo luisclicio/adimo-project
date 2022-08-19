@@ -15,6 +15,7 @@ export function CopyButton({
       {({ copied, copy }) => (
         <Tooltip
           label={copied ? 'Copiado' : 'Copiar'}
+          events={{ hover: true, focus: true, touch: true }}
           withArrow
           position="right"
         >
