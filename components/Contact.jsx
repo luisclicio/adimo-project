@@ -1,16 +1,6 @@
-import {
-  Paper,
-  Text,
-  TextInput,
-  Textarea,
-  Button,
-  Group,
-  SimpleGrid,
-  createStyles,
-  Stack,
-  Autocomplete,
-} from '@mantine/core';
+import { Paper, Text, Group, createStyles, Stack } from '@mantine/core';
 import { IconClock, IconMail, IconMapPin, IconPhone } from '@tabler/icons';
+import { ContactForm } from './ContactForm';
 
 const useStyles = createStyles((theme) => {
   const BREAKPOINT = theme.fn.smallerThan('sm');
@@ -30,8 +20,6 @@ const useStyles = createStyles((theme) => {
     },
 
     form: {
-      boxSizing: 'border-box',
-      flex: 1,
       paddingTop: theme.spacing.xl,
       paddingLeft: theme.spacing.xl,
 
@@ -114,55 +102,7 @@ export function ContactSection({ ...props }) {
         </Stack>
       </div>
 
-      <form
-        className={classes.form}
-        onSubmit={(event) => event.preventDefault()}
-      >
-        <Text size="xl" className={classes.title}>
-          Fale conosco
-        </Text>
-
-        <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-          <TextInput label="Seu nome" placeholder="Ex: João Silva" required />
-
-          <TextInput
-            type="email"
-            label="Seu e-mail"
-            placeholder="Ex: joaosilva@mail.com"
-            required
-          />
-        </SimpleGrid>
-
-        <Autocomplete
-          mt="md"
-          label="Assunto"
-          placeholder="Ex: Tirar dúvidas, Agendar visita, etc."
-          data={[
-            'Matrícula',
-            'Tirar dúvidas',
-            'Tornar-se padrinho',
-            'Tornar-se voluntário',
-            'Sugestão',
-            'Agendar visita',
-            'Outros',
-          ]}
-          required
-        />
-
-        <Textarea
-          mt="md"
-          label="Mensagem"
-          placeholder="Conteúdo da mensagem"
-          minRows={3}
-          required
-        />
-
-        <Group position="right" mt="md">
-          <Button type="submit" className={classes.control}>
-            Enviar
-          </Button>
-        </Group>
-      </form>
+      <ContactForm className={classes.form} />
     </Paper>
   );
 }
