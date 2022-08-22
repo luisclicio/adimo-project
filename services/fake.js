@@ -137,6 +137,21 @@ const fakeData = {
       followLink: 'https://picsum.photos/id/177/3973/2639',
     },
   ],
+
+  photos: [
+    {
+      caption: 'Lorem ipsum dolor sit amet',
+      image: 'https://picsum.photos/id/238/1000/700',
+    },
+    {
+      caption: 'Lorem ipsum dolor sit amet',
+      image: 'https://picsum.photos/id/239/700/1000',
+    },
+    {
+      caption: 'Lorem ipsum dolor sit amet',
+      image: 'https://picsum.photos/id/243/1000/600',
+    },
+  ],
 };
 
 export default fakeData;
