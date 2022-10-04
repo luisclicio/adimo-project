@@ -18,8 +18,16 @@ const nextConfig = {
         destination: '/events',
       },
       {
+        source: '/eventos/:slug',
+        destination: '/events/:slug',
+      },
+      {
         source: '/noticias',
         destination: '/articles',
+      },
+      {
+        source: '/noticias/:slug',
+        destination: '/articles/:slug',
       },
       {
         source: '/parceiros',
@@ -28,6 +36,10 @@ const nextConfig = {
       {
         source: '/apoie',
         destination: '/sponsor',
+      },
+      {
+        source: '/admin/mensagens',
+        destination: '/admin/messages',
       },
     ];
   },
