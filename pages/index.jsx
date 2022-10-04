@@ -106,10 +106,11 @@ function HeroSection({ carrouselImages }) {
         </Title>
 
         <Text mt="md" size="lg">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi
-          pariatur, eos quis earum, nulla vero recusandae deleniti quia ipsum
-          aspernatur cupiditate mollitia! Nulla, odit. Ullam id odit vitae
-          dolorum recusandae?
+          Promovendo a educação integral e a participação social de crianças e
+          adolescentes. Somos uma entidade sem fins lucrativos, que desenvolve
+          ações de combate ao racismo e todo tipo de intolerância. Também
+          promovemos a inclusão social de nossos participantes. Atuamos na
+          cidade de Picos-PI e macrorregião.
         </Text>
       </div>
 
