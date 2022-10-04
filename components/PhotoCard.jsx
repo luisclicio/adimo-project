@@ -1,6 +1,6 @@
 import { useMantineTheme, Box, Text } from '@mantine/core';
 
-export function PhotoCard({ image, caption }) {
+export function PhotoCard({ image, caption = '', height = '300px', sx = {} }) {
   const theme = useMantineTheme();
 
   return (
@@ -11,11 +11,12 @@ export function PhotoCard({ image, caption }) {
           backgroundImage: `url(${image})`,
           borderRadius: theme.radius.md,
           display: 'flex',
-          height: '300px',
+          height,
           justifyContent: 'center',
           overflow: 'hidden',
           position: 'relative',
           width: '100%',
+          ...sx,
         }}
       >
         <Box

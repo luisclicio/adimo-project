@@ -8,6 +8,8 @@ import { Time } from './Time';
 
 const useStyles = createStyles((theme, _params, getRef) => ({
   card: {
+    display: 'flex',
+    flexDirection: 'column',
     backgroundColor: theme.colors.dark[8],
     transition: '300ms',
 
@@ -38,6 +40,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
   },
 
   footer: {
+    flex: '1',
     marginTop: theme.spacing.md,
   },
 }));
@@ -80,7 +83,7 @@ export function ArticleCard({
         {description}
       </Text>
 
-      <Group position="apart" className={classes.footer}>
+      <Group position="apart" align="flex-end" className={classes.footer}>
         <Text size="sm" color="dimmed" m={0}>
           Publicado em: <Time datetime={publishedAt} />
         </Text>

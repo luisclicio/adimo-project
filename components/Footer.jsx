@@ -283,7 +283,7 @@ export function Footer() {
       <Container className={classes.afterFooter}>
         <Text color="dimmed" size="sm" m={0}>
           Site desenvolvido por{' '}
-          <DevLink name={'Luís Clício'} url={'https://github.com/darktechlc'} />
+          <DevLink name={'Luís Clício'} url={'https://github.com/luisclicio'} />
           ,{' '}
           <DevLink
             name={'José Wanderlei'}
