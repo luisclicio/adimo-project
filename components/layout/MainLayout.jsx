@@ -5,7 +5,7 @@ import { MainNavbar } from '../navbar/MainNavbar';
 import { Footer } from '../Footer';
 import { ContactDialog } from '../ContactDialog';
 
-export function MainLayout({ title, children }) {
+export function MainLayout({ title, children, size }) {
   return (
     <>
       <Head>
@@ -14,7 +14,7 @@ export function MainLayout({ title, children }) {
 
       <MainNavbar />
 
-      <Container>{children}</Container>
+      <Container size={size}>{children}</Container>
 
       <ContactDialog />
 

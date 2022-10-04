@@ -14,7 +14,7 @@ export default function Articles() {
         <Text size="lg">Conheça os eventos e ações que já realizamos.</Text>
       </Header>
 
-      <ArticlesGrid articles={[...FAKE.articles, ...FAKE.articles.reverse()]} />
+      <ArticlesGrid articles={FAKE.articles} />
     </MainLayout>
   );
 }
