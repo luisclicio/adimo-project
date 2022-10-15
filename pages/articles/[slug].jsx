@@ -5,12 +5,13 @@ import {
   useMantineTheme,
   TypographyStylesProvider,
 } from '@mantine/core';
+import { gql } from '@apollo/client';
 
 import { MainLayout } from '../../components/layout/MainLayout';
 import { PhotoCard } from '../../components/PhotoCard';
 
-// Fake data
-import FAKE from '../../services/fake';
+import { hygraph } from '../../services/hygraph';
+import { Time } from '../../components/Time';
 
 export default function Article({ article }) {
   const theme = useMantineTheme();
@@ -20,8 +21,11 @@ export default function Article({ article }) {
       <Header unstyled py="xl">
         <Title color="white">{article.title}</Title>
         <Text size="lg">{article.description}</Text>
+        <Text>
+          Publicado em: <Time datetime={article.publishedAt} />
+        </Text>
         <PhotoCard
-          image={article.image}
+          image={article.coverImage.url}
           caption=""
           height="380px"
           sx={{ mt: theme.spacing.md }}
@@ -31,11 +35,7 @@ export default function Article({ article }) {
       <TypographyStylesProvider>
         <div
           dangerouslySetInnerHTML={{
-            __html: `<h2>Subtítulo da postagem aqui</h2>
-              <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Exercitationem corporis illum officia repellendus vero adipisci, et aut quo, debitis error cumque eum! Repellat quod adipisci quis nihil debitis, voluptatem qui.</p>
-              <img src="/images/articles/image-02.webp" />
-              <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Exercitationem corporis illum officia repellendus vero adipisci, et aut quo, debitis error cumque eum! Repellat quod adipisci quis nihil debitis, voluptatem qui.</p>
-            `,
+            __html: article.content.html,
           }}
         />
       </TypographyStylesProvider>
@@ -44,17 +44,56 @@ export default function Article({ article }) {
 }
 
 export async function getStaticPaths() {
+  const { data } = await hygraph.query({
+    query: gql`
+      query GetPostsSlugs {
+        posts {
+          slug
+        }
+      }
+    `,
+  });
+
   return {
-    paths: FAKE.articles.map(({ slug }) => ({ params: { slug } })),
+    paths: data?.posts.map(({ slug }) => ({ params: { slug } })) ?? [],
     fallback: 'blocking',
   };
 }
 
 export async function getStaticProps({ params }) {
+  const { data } = await hygraph.query({
+    query: gql`
+      query GetPost($slug: String!) {
+        post(where: { slug: $slug }) {
+          id
+          title
+          slug
+          publishedAt
+          description
+          content {
+            html
+          }
+          coverImage {
+            url
+          }
+        }
+      }
+    `,
+    variables: {
+      slug: params.slug,
+    },
+  });
+
+  if (!data?.post) {
+    return {
+      notFound: true,
+    };
+  }
+
   return {
     props: {
-      article: FAKE.articles.find((article) => article.slug === params.slug),
+      article: data.post,
     },
-    revalidate: 2 * 60, // In seconds
+    revalidate: 5 * 60, // Revalidate page after 5 minutes
   };
 }
