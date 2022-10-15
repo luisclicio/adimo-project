@@ -12,6 +12,7 @@ import {
 } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import Autoplay from 'embla-carousel-autoplay';
+import { gql } from '@apollo/client';
 
 import { MainLayout } from '../components/layout/MainLayout';
 import { Section } from '../components/Section';
@@ -22,17 +23,18 @@ import { EventsGrid } from '../components/EventsGrid';
 import { ArticlesGrid } from '../components/ArticlesGrid';
 import { ContactSection } from '../components/Contact';
 
+import { hygraph } from '../services/hygraph';
 // Fake data
 import FAKE from '../services/fake';
 
-export default function Home() {
+export default function Home({ activities = [], events = [], articles = [] }) {
   return (
     <MainLayout title="Página Inicial">
       <HeroSection carrouselImages={FAKE.carrouselImages} />
-      <ActivitiesSection activities={FAKE.activities} />
+      {activities.length > 0 && <ActivitiesSection activities={activities} />}
       <TestimonialsSection testimonials={FAKE.testimonials} />
-      <EventsSection events={FAKE.events} />
-      <ArticlesSection articles={FAKE.articles} />
+      {events.length > 0 && <EventsSection events={events} />}
+      {articles.length > 0 && <ArticlesSection articles={articles} />}
       <ContactSection mt={64} />
     </MainLayout>
   );
@@ -93,7 +95,7 @@ const useHeroStyles = createStyles((theme) => ({
   },
 }));
 
-function HeroSection({ carrouselImages }) {
+function HeroSection({ carrouselImages = [] }) {
   const { classes } = useHeroStyles();
   const autoplay = useRef(Autoplay({ delay: 5000 }));
 
@@ -136,7 +138,7 @@ function HeroSection({ carrouselImages }) {
   );
 }
 
-function ActivitiesSection({ activities }) {
+function ActivitiesSection({ activities = [] }) {
   return (
     <Section
       title="Nossas atividades"
@@ -148,9 +150,9 @@ function ActivitiesSection({ activities }) {
         breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
       >
         {activities.map((activity) => (
-          <Group key={activity.title} noWrap spacing="md">
+          <Group key={activity.id} noWrap spacing="md">
             <Image
-              src={activity.image}
+              src={activity.coverImage.url}
               alt={activity.title}
               radius="md"
               sx={{
@@ -183,7 +185,7 @@ function ActivitiesSection({ activities }) {
   );
 }
 
-function TestimonialsSection({ testimonials }) {
+function TestimonialsSection({ testimonials = [] }) {
   return (
     <Section
       title="Depoimentos"
@@ -202,11 +204,11 @@ function TestimonialsSection({ testimonials }) {
   );
 }
 
-function EventsSection({ events }) {
+function EventsSection({ events = [] }) {
   return (
     <Section
       title="Próximos eventos"
-      description="Conheça nossos próximos eventos."
+      description="Veja alguns do nossos próximos eventos."
     >
       <EventsGrid events={events} />
 
@@ -217,7 +219,7 @@ function EventsSection({ events }) {
   );
 }
 
-function ArticlesSection({ articles }) {
+function ArticlesSection({ articles = [] }) {
   return (
     <Section
       title="Últimas notícias"
@@ -230,4 +232,55 @@ function ArticlesSection({ articles }) {
       </Center>
     </Section>
   );
+}
+
+export async function getStaticProps() {
+  const { data } = await hygraph.query({
+    query: gql`
+      query GetHomeData($now: DateTime!) {
+        activities(where: { isActive: true }) {
+          id
+          title
+          schedule
+          coverImage {
+            url
+          }
+        }
+
+        events(orderBy: publishedAt_DESC, where: { date_gt: $now }, first: 3) {
+          id
+          title
+          slug
+          date
+          location
+          coverImage {
+            url
+          }
+        }
+
+        posts(orderBy: publishedAt_DESC, first: 3) {
+          id
+          title
+          description
+          slug
+          publishedAt
+          coverImage {
+            url
+          }
+        }
+      }
+    `,
+    variables: {
+      now: new Date(),
+    },
+  });
+
+  return {
+    props: {
+      activities: data?.activities ?? [],
+      events: data?.events ?? [],
+      articles: data?.posts ?? [],
+    },
+    revalidate: 5 * 60, // Revalidate page after 5 minutes
+  };
 }
