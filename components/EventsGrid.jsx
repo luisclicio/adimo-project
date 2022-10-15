@@ -1,16 +1,16 @@
 import { AppGrid } from './AppGrid';
 import { EventCard } from './EventCard';
 
-export function EventsGrid({ events }) {
+export function EventsGrid({ events = [] }) {
   return (
     <AppGrid>
       {events.map((event) => (
         <EventCard
-          key={event.slug}
+          key={event.id}
           title={event.title}
-          local={event.local}
+          local={event.location}
           slug={event.slug}
-          image={event.image}
+          image={event.coverImage.url}
           date={event.date}
         />
       ))}
