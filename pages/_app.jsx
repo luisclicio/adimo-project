@@ -5,6 +5,8 @@ import { ApolloProvider } from '@apollo/client';
 
 import { hygraph } from '../services/hygraph';
 
+import '../styles/globals.css';
+
 export default function App({ Component, pageProps }) {
   return (
     <>
