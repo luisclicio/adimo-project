@@ -4,6 +4,7 @@ import { useWindowScroll } from '@mantine/hooks';
 import { useState } from 'react';
 
 import { ContactForm } from './ContactForm';
+import { BrowserOnly } from './BrowserOnly';
 
 export function ContactDialog() {
   const [opened, setOpened] = useState(false);
@@ -29,15 +30,17 @@ export function ContactDialog() {
         })}
       >
         <ScrollArea>
-          <ContactForm
-            elementsFullWidth
-            sx={(theme) => ({
-              [theme.fn.smallerThan('xs')]: {
-                maxHeight: '340px',
-                maxWidth: '300px',
-              },
-            })}
-          />
+          <BrowserOnly>
+            <ContactForm
+              elementsFullWidth
+              sx={(theme) => ({
+                [theme.fn.smallerThan('xs')]: {
+                  maxHeight: '340px',
+                  maxWidth: '300px',
+                },
+              })}
+            />
+          </BrowserOnly>
         </ScrollArea>
       </Dialog>
 

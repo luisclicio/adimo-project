@@ -1,5 +1,7 @@
 import { Paper, Text, Group, createStyles, Stack } from '@mantine/core';
 import { IconClock, IconMail, IconMapPin, IconPhone } from '@tabler/icons';
+
+import { BrowserOnly } from './BrowserOnly';
 import { ContactForm } from './ContactForm';
 
 const useStyles = createStyles((theme) => {
@@ -102,7 +104,9 @@ export function ContactSection({ ...props }) {
         </Stack>
       </div>
 
-      <ContactForm className={classes.form} />
+      <BrowserOnly>
+        <ContactForm className={classes.form} />
+      </BrowserOnly>
     </Paper>
   );
 }
