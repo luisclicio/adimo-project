@@ -1,15 +1,19 @@
 import { Header, Title, Text } from '@mantine/core';
+import { gql } from '@apollo/client';
 
 import { MainLayout } from '../components/layout/MainLayout';
 import { AppGrid } from '../components/AppGrid';
 import { CollaboratorCard } from '../components/CollaboratorCard';
 
-// Fake data
-import FAKE from '../services/fake';
+import { hygraph } from '../services/hygraph';
 
-export default function Collaborators() {
-  const collaborators = FAKE.collaborators;
+const TYPES_MAP = {
+  Apoiador: 'Apoiador',
+  Padrinho: 'Padrinho',
+  Voluntario: 'Voluntário',
+};
 
+export default function Collaborators({ collaborators = [] }) {
   return (
     <MainLayout title="Parceiros e colaboradores">
       <Header unstyled py="xl">
@@ -21,16 +25,45 @@ export default function Collaborators() {
       </Header>
 
       <AppGrid>
-        {collaborators.map((collaborator) => (
-          <CollaboratorCard
-            key={collaborator.name}
-            name={collaborator.name}
-            avatar={collaborator.avatar}
-            role={collaborator.role}
-            followLink={collaborator.followLink}
-          />
-        ))}
+        {collaborators.length > 0 ? (
+          collaborators.map((collaborator) => (
+            <CollaboratorCard
+              key={collaborator.name}
+              name={collaborator.name}
+              avatar={collaborator.avatar.url}
+              role={TYPES_MAP[collaborator.type]}
+              followLink={collaborator.followLink}
+            />
+          ))
+        ) : (
+          <Text>Nenhum colaborador cadastrado.</Text>
+        )}
       </AppGrid>
     </MainLayout>
   );
+}
+
+export async function getStaticProps() {
+  const { data } = await hygraph.query({
+    query: gql`
+      query GetCollaborators {
+        collaborators {
+          id
+          name
+          type
+          followLink
+          avatar {
+            url
+          }
+        }
+      }
+    `,
+  });
+
+  return {
+    props: {
+      collaborators: data?.collaborators ?? [],
+    },
+    revalidate: 10 * 60, // Revalidate page after 10 minutes
+  };
 }
