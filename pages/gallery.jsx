@@ -51,6 +51,6 @@ export async function getStaticProps() {
     props: {
       photos: data?.photos ?? [],
     },
-    revalidate: 60, // Revalidate page after 60 seconds
+    revalidate: 5 * 60, // Revalidate page after 5 minutes
   };
 }
