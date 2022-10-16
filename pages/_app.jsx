@@ -1,5 +1,9 @@
 import Head from 'next/head';
 import { MantineProvider } from '@mantine/core';
+import { NotificationsProvider } from '@mantine/notifications';
+import { ApolloProvider } from '@apollo/client';
+
+import { hygraph } from '../services/hygraph';
 
 export default function App({ Component, pageProps }) {
   return (
@@ -71,10 +75,28 @@ export default function App({ Component, pageProps }) {
                 size: 'md',
               },
             },
+            Notification: {
+              styles: (theme) => ({
+                title: {
+                  fontSize: theme.fontSizes.md,
+                  fontWeight: 'bold',
+                  marginTop: 0,
+                },
+                description: {
+                  fontSize: theme.fontSizes.md,
+                  marginTop: 0,
+                  marginBottom: 0,
+                },
+              }),
+            },
           },
         }}
       >
-        <Component {...pageProps} />
+        <ApolloProvider client={hygraph}>
+          <NotificationsProvider autoClose={15000}>
+            <Component {...pageProps} />
+          </NotificationsProvider>
+        </ApolloProvider>
       </MantineProvider>
     </>
   );
