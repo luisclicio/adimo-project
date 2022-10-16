@@ -1,7 +1,10 @@
+import Link from 'next/link';
 import {
   Header,
   Title,
   Text,
+  Breadcrumbs,
+  Anchor,
   useMantineTheme,
   TypographyStylesProvider,
 } from '@mantine/core';
@@ -19,6 +22,16 @@ export default function Article({ article }) {
   return (
     <MainLayout title={article.title} size="sm">
       <Header unstyled py="xl">
+        <Breadcrumbs>
+          <Link href="/" passHref>
+            <Anchor component="a">Início</Anchor>
+          </Link>
+          <Link href="/noticias" passHref>
+            <Anchor component="a">Notícias</Anchor>
+          </Link>
+          <Text>{article.title}</Text>
+        </Breadcrumbs>
+
         <Title color="white">{article.title}</Title>
         <Text size="lg">{article.description}</Text>
         <Text>
