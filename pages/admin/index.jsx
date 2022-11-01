@@ -6,6 +6,7 @@ import {
   Button,
   Divider,
   Group,
+  Loader,
   Modal,
   Paper,
   Stack,
@@ -16,10 +17,12 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { gql, useQuery } from '@apollo/client';
 import { IconDownload, IconEye, IconSearch } from '@tabler/icons';
 
 import { AdminLayout } from '../../components/layout/AdminLayout';
+import { Time } from '../../components/Time';
 
 import { StudentsListPDF } from '../../pdf/StudentsListPDF';
 import { StudentReportPDF } from '../../pdf/StudentReportPDF';
@@ -31,17 +34,33 @@ const PDFDownloadLink = dynamic(
   }
 );
 
-// Fake data
-import FAKE from '../../services/fake';
-import { Time } from '../../components/Time';
-
 export default function Home() {
-  const [students, setStudents] = useState([]);
+  const {
+    loading,
+    error,
+    data: { students = [] } = {},
+  } = useQuery(gql`
+    query GetStudents {
+      students {
+        id
+        fullName
+        avatar {
+          url
+        }
+        cpf
+        sex
+        birthdate
+        email
+        observations
+        activities {
+          id
+          title
+          schedule
+        }
+      }
+    }
+  `);
   const [searched, setSearched] = useState('');
-
-  useEffect(() => {
-    setStudents(FAKE.students);
-  }, []);
 
   const filteredStudents =
     searched.length > 0
@@ -56,45 +75,69 @@ export default function Home() {
 
   return (
     <AdminLayout title="Painel administrativo">
-      <section>
-        <Title order={2}>Estudantes matriculados</Title>
+      {loading ? (
+        <Box
+          px="md"
+          sx={{ display: 'grid', height: '70vh', placeItems: 'center' }}
+        >
+          {error ? (
+            <Stack align="center" position="center" mt="xl" pt="xl">
+              <Text m="0" size="lg">
+                Falha ao carregar dados dos estudantes!
+              </Text>
+            </Stack>
+          ) : (
+            <Stack align="center" position="center" mt="xl" pt="xl">
+              <Loader size="lg" />
+              <Text m="0" size="lg">
+                Carregando dados dos estudantes...
+              </Text>
+            </Stack>
+          )}
+        </Box>
+      ) : (
+        <section>
+          <Title order={2}>Estudantes matriculados</Title>
 
-        <Group align="center" position="apart" mt="sm" noWrap>
-          <TextInput
-            placeholder="Busque por estudantes ou atividades..."
-            icon={<IconSearch size={16} />}
-            value={searched}
-            onChange={(event) => setSearched(event.target.value)}
-            sx={{
-              maxWidth: '360px',
-              width: '100%',
-            }}
-          />
+          <Group align="center" position="apart" mt="sm" noWrap>
+            <TextInput
+              placeholder="Busque por estudantes ou atividades..."
+              icon={<IconSearch size={16} />}
+              value={searched}
+              onChange={(event) => setSearched(event.target.value)}
+              sx={{
+                maxWidth: '360px',
+                width: '100%',
+              }}
+            />
 
-          <PDFDownloadLink
-            document={<StudentsListPDF students={filteredStudents} />}
-            fileName="lista-de-estudantes.pdf"
-          >
-            {({ blob, url, loading, error }) =>
-              loading ? (
-                <Button variant="default" loading disabled>
-                  Carregando...
-                </Button>
-              ) : (
-                <Button variant="default" leftIcon={<IconDownload />}>
-                  Exportar
-                </Button>
-              )
-            }
-          </PDFDownloadLink>
-        </Group>
+            {students.length > 0 && (
+              <PDFDownloadLink
+                document={<StudentsListPDF students={filteredStudents} />}
+                fileName="lista-de-estudantes.pdf"
+              >
+                {({ loading: loadingPdf }) =>
+                  loadingPdf ? (
+                    <Button variant="default" loading disabled>
+                      Carregando...
+                    </Button>
+                  ) : (
+                    <Button variant="default" leftIcon={<IconDownload />}>
+                      Exportar
+                    </Button>
+                  )
+                }
+              </PDFDownloadLink>
+            )}
+          </Group>
 
-        <Stack component="ul" p="0" mt="sm">
-          {filteredStudents.map((student) => (
-            <StudentCard key={student.id} student={student} />
-          ))}
-        </Stack>
-      </section>
+          <Stack component="ul" p="0" mt="sm">
+            {filteredStudents.map((student) => (
+              <StudentCard key={student.id} student={student} />
+            ))}
+          </Stack>
+        </section>
+      )}
     </AdminLayout>
   );
 }
@@ -103,7 +146,10 @@ function StudentCard({ student }) {
   const theme = useMantineTheme();
   const [modalOpened, { open, close }] = useDisclosure(false);
 
-  const filename = `GCA_${student.fullName.replace(/\s+/g, '-')}.pdf`;
+  const filename = useMemo(
+    () => `GCA_${student.fullName.replace(/\s+/g, '-')}.pdf`,
+    [student]
+  );
 
   return (
     <>
@@ -141,7 +187,13 @@ function StudentCard({ student }) {
         onClose={close}
       >
         <Stack align="center">
-          <Avatar src={student?.avatar?.url} alt="" size={136} color="red.6" />
+          <Avatar
+            src={student?.avatar?.url}
+            alt={student.fullName}
+            size={136}
+            color="red.6"
+          />
+
           <PDFDownloadLink
             document={<StudentReportPDF student={student} />}
             fileName={filename}
@@ -195,17 +247,23 @@ function StudentCard({ student }) {
         <Box>
           <Title order={4}>Atividades/Oficinas</Title>
 
-          <Stack mt="xs" spacing="xs">
-            {student?.activities?.map((activity) => (
-              <Group key={activity.id} position="apart" spacing="xs">
-                <Text weight="bold" m="0">
-                  {activity.title}
-                </Text>
-                <Box sx={{ borderBottom: '1px dashed', flex: 1 }} />
-                <Text m="0">{activity.schedule}</Text>
-              </Group>
-            ))}
-          </Stack>
+          {student?.activities?.length > 0 ? (
+            <Stack mt="xs" spacing="xs">
+              {student?.activities?.map((activity) => (
+                <Group key={activity.id} position="apart" spacing="xs">
+                  <Text weight="bold" m="0">
+                    {activity.title}
+                  </Text>
+                  <Box sx={{ borderBottom: '1px dashed', flex: 1 }} />
+                  <Text m="0">{activity.schedule}</Text>
+                </Group>
+              ))}
+            </Stack>
+          ) : (
+            <Text m="0" mt="xs">
+              O aluno não está matriculado atividades.
+            </Text>
+          )}
         </Box>
       </Modal>
     </>
