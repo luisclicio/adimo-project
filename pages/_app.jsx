@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { SessionProvider } from 'next-auth/react';
 import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { ApolloProvider } from '@apollo/client';
@@ -7,9 +8,12 @@ import { hygraph } from '../services/hygraph';
 
 import '../styles/globals.css';
 
-export default function App({ Component, pageProps }) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
   return (
-    <>
+    <SessionProvider session={session}>
       <Head>
         <title>Grupo Cultural Adimó</title>
         <meta
@@ -100,6 +104,6 @@ export default function App({ Component, pageProps }) {
           </NotificationsProvider>
         </ApolloProvider>
       </MantineProvider>
-    </>
+    </SessionProvider>
   );
 }
