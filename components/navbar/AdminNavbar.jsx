@@ -12,6 +12,7 @@ import {
   Indicator,
 } from '@mantine/core';
 import { IconBell, IconExternalLink, IconLogout } from '@tabler/icons';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 
 import { Logo } from '../Logo';
@@ -40,6 +41,7 @@ const useStyles = createStyles((theme) => ({
 
 export function AdminNavbar() {
   const { classes, cx } = useStyles();
+  const { data } = useSession();
 
   return (
     <>
@@ -96,10 +98,10 @@ export function AdminNavbar() {
               <Menu.Dropdown sx={{ minWidth: '200px' }}>
                 <Stack px="sm" py="sm" spacing="0">
                   <Text my="0" weight="bold">
-                    Usuário Tal
+                    {data?.user?.name}
                   </Text>
                   <Text color="dimmed" my="0">
-                    user@mail.com
+                    {data?.user?.email}
                   </Text>
                 </Stack>
 
@@ -108,7 +110,7 @@ export function AdminNavbar() {
                 <Menu.Item
                   color="red"
                   icon={<IconLogout size={16} />}
-                  onClick={() => console.log('Saindo...')}
+                  onClick={signOut}
                 >
                   Encerrar sessão
                 </Menu.Item>
