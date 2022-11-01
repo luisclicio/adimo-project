@@ -87,8 +87,8 @@ export function AdminNavbar() {
             <Menu shadow="xl" position="bottom-end">
               <Menu.Target>
                 <Avatar
-                  src=""
-                  alt=""
+                  src={data?.user?.image}
+                  alt={data?.user?.name}
                   size="md"
                   color="red.6"
                   sx={{ cursor: 'pointer' }}

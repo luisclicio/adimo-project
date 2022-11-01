@@ -28,6 +28,9 @@ export default NextAuth({
                   id
                   password
                   fullName
+                  avatar {
+                    url
+                  }
                 }
               }
             `,
@@ -52,6 +55,7 @@ export default NextAuth({
             id: admin.id,
             email,
             name: admin.fullName,
+            image: admin.avatar?.url,
           };
         } catch (error) {
           throw error;
