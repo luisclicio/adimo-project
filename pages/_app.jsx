@@ -20,6 +20,7 @@ export default function App({
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
+        <meta name="theme-color" content="#1A1B1E" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
 

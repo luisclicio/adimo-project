@@ -143,7 +143,7 @@ export function ContactForm({
         }
       },
       onError(error) {
-        console.log(error);
+        console.error(error);
 
         showNotification({
           title: 'Mensagem não enviada!',

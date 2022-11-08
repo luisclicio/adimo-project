@@ -140,23 +140,25 @@ export function StudentReportPDF({ student }) {
             )}
           </View>
 
-          <View style={{ marginTop: 24 }}>
-            <TextBold style={{ marginBottom: 4 }}>Atividades</TextBold>
+          {student?.activities.length > 0 && (
+            <View style={{ marginTop: 24 }}>
+              <TextBold style={{ marginBottom: 4 }}>Atividades</TextBold>
 
-            {student.activities.map((activity) => (
-              <View key={activity.id} style={styles.studentCardActivity}>
-                <Text style={{ marginRight: 4 }}>{activity.title}</Text>
-                <View
-                  style={{
-                    borderBottom: 0.5,
-                    borderBottomStyle: 'dotted',
-                    flex: 1,
-                  }}
-                />
-                <Text style={{ marginLeft: 4 }}>{activity.schedule}</Text>
-              </View>
-            ))}
-          </View>
+              {student.activities.map((activity) => (
+                <View key={activity.id} style={styles.studentCardActivity}>
+                  <Text style={{ marginRight: 4 }}>{activity.title}</Text>
+                  <View
+                    style={{
+                      borderBottom: 0.5,
+                      borderBottomStyle: 'dotted',
+                      flex: 1,
+                    }}
+                  />
+                  <Text style={{ marginLeft: 4 }}>{activity.schedule}</Text>
+                </View>
+              ))}
+            </View>
+          )}
         </View>
 
         <View style={styles.footer} fixed>
