@@ -1,3 +1,4 @@
+import { gql, useQuery } from '@apollo/client';
 import {
   createStyles,
   Header,
@@ -41,7 +42,18 @@ const useStyles = createStyles((theme) => ({
 
 export function AdminNavbar() {
   const { classes, cx } = useStyles();
-  const { data } = useSession();
+  const { data: session } = useSession();
+
+  const { data } = useQuery(
+    gql`
+      query GeUnreadMessages {
+        messages(where: { wasRead: null }) {
+          id
+        }
+      }
+    `,
+    { fetchPolicy: 'no-cache' }
+  );
 
   return (
     <>
@@ -75,7 +87,13 @@ export function AdminNavbar() {
               events={{ hover: true, focus: true, touch: true }}
               withArrow
             >
-              <Indicator dot size={16} offset={4} disabled={false} label="3">
+              <Indicator
+                dot
+                size={16}
+                offset={4}
+                disabled={data?.messages.length === 0}
+                label={data?.messages.length}
+              >
                 <Link href="/admin/mensagens" passHref>
                   <ActionIcon component="a" variant="default" size="lg">
                     <IconBell size={24} />
@@ -87,8 +105,8 @@ export function AdminNavbar() {
             <Menu shadow="xl" position="bottom-end">
               <Menu.Target>
                 <Avatar
-                  src={data?.user?.image}
-                  alt={data?.user?.name}
+                  src={session?.user?.image}
+                  alt={session?.user?.name}
                   size="md"
                   color="red.6"
                   sx={{ cursor: 'pointer' }}
@@ -98,10 +116,10 @@ export function AdminNavbar() {
               <Menu.Dropdown sx={{ minWidth: '200px' }}>
                 <Stack px="sm" py="sm" spacing="0">
                   <Text my="0" weight="bold">
-                    {data?.user?.name}
+                    {session?.user?.name}
                   </Text>
                   <Text color="dimmed" my="0">
-                    {data?.user?.email}
+                    {session?.user?.email}
                   </Text>
                 </Stack>
 
