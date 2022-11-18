@@ -8,6 +8,8 @@ const Map = dynamic(async () => (await import('../components/Map')).Map, {
   ssr: false,
 });
 
+import { constants } from '../services/constants';
+
 export default function Home() {
   return (
     <MainLayout title="Sobre">
@@ -47,8 +49,7 @@ export default function Home() {
           </Box>
 
           <Image
-            src="/images/image-01.webp"
-            // src="https://picsum.photos/id/104/1000/700"
+            src="/images/banner.webp"
             alt=""
             radius="md"
             sx={{ flex: 1 }}
@@ -93,16 +94,17 @@ export default function Home() {
 
       <Section
         title="Localização"
-        description="Nossa instituição fica localizada no bairro Centro, rua Coronel Francisco Santos, Nº 252, em Picos, PI."
+        description={`Nossa instituição fica localizada no bairro ${constants.address.neighborhood}, ${constants.address.street}, 
+            Nº ${constants.address.number}, em Picos, PI.`}
       >
         <Map
           mt="xl"
-          center={[-7.0839, -41.47]}
+          center={constants.address.coordinates}
           zoom={15}
           markers={[
             {
               title: 'Grupo Cultural Adimó',
-              position: [-7.0839, -41.47],
+              position: constants.address.coordinates,
               content: (
                 <Text size="sm" weight="bold" align="center">
                   Grupo Cultural Adimó

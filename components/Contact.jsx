@@ -4,6 +4,8 @@ import { IconClock, IconMail, IconMapPin, IconPhone } from '@tabler/icons';
 import { BrowserOnly } from './BrowserOnly';
 import { ContactForm } from './ContactForm';
 
+import { constants } from '../services/constants';
+
 const useStyles = createStyles((theme) => {
   const BREAKPOINT = theme.fn.smallerThan('sm');
 
@@ -66,6 +68,7 @@ const useStyles = createStyles((theme) => {
 
 export function ContactSection({ ...props }) {
   const { classes } = useStyles();
+  const { contact, address } = constants;
 
   return (
     <Paper className={classes.wrapper} {...props}>
@@ -77,28 +80,34 @@ export function ContactSection({ ...props }) {
         <Stack>
           <ContactIcon
             label="E-mail"
-            value="gcadimo@hotmail.com"
+            value={contact.email}
             icon={<IconMail size={28} color="white" />}
-            link="mailto:gcadimo@hotmail.com"
+            link={`mailto:${contact.email}`}
           />
 
           <ContactIcon
             label="Telefone"
-            value="(XX) XXXXX-XXXX"
+            value={contact.phone}
             icon={<IconPhone size={28} color="white" />}
-            link="tel:00000000000"
+            link={`tel:${contact.phone}`}
           />
 
           <ContactIcon
             label="Endereço"
-            value="Praça Josino Ferreira, 252, Centro, Picos"
+            value={[
+              address.street,
+              address.number,
+              address.neighborhood,
+              'Picos',
+            ].join(', ')}
             icon={<IconMapPin size={28} color="white" />}
+            // TODO: update coordinate
             link="https://goo.gl/maps/A7qG9UqEwyC12wT37"
           />
 
           <ContactIcon
             label="Horário de funcionamento"
-            value="De quarta a sexta, das 14h às 16h30min"
+            value="De segunda a sábado, das 8h às 17h"
             icon={<IconClock size={28} color="white" />}
           />
         </Stack>

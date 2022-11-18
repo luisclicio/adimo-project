@@ -12,6 +12,8 @@ import { IconBrandFacebook, IconBrandInstagram } from '@tabler/icons';
 
 import { Logo } from './Logo';
 
+import { constants } from '../services/constants';
+
 const footerData = [
   {
     title: 'Recursos',
@@ -55,12 +57,12 @@ const footerData = [
     links: [
       {
         label: 'Facebook',
-        url: 'https://facebook.com/grupoculturaladimo',
+        url: constants.social.facebook.url,
         external: true,
       },
       {
         label: 'Instagram',
-        url: 'https://instagram.com/grupoculturaladimo',
+        url: constants.social.instagram.url,
         external: true,
       },
     ],
@@ -70,12 +72,12 @@ const footerData = [
 const socialLinks = [
   {
     label: '@grupoculturaladimo',
-    url: 'https://facebook.com/grupoculturaladimo',
+    url: constants.social.facebook.url,
     icon: <IconBrandFacebook stroke={1.5} />,
   },
   {
     label: '@grupoculturaladimo',
-    url: 'https://instagram.com/grupoculturaladimo',
+    url: constants.social.instagram.url,
     icon: <IconBrandInstagram stroke={1.5} />,
   },
 ];
@@ -254,10 +256,11 @@ export function Footer() {
         <Stack spacing="xs" sx={{ width: '100%' }}>
           <Text size="sm" m={0}>
             {new Date().getFullYear()} Grupo Cultural Adimó. CNPJ
-            09.483.532/0001-00.
+            {constants.cnpj}
           </Text>
           <Text size="sm" m={0}>
-            Rua Cel. Francisco Santos, Centro, 252, 64600-096 - Picos, PI.
+            {constants.address.street}, {constants.address.neighborhood},{' '}
+            {constants.address.number}, {constants.address.cep} - Picos, PI.
           </Text>
         </Stack>
 
