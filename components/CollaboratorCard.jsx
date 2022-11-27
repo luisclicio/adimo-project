@@ -12,7 +12,7 @@ export function CollaboratorCard({ avatar, name, role, followLink }) {
         justifyContent: 'center',
       })}
     >
-      <Avatar src={avatar} size={120} radius={120} mx="auto" />
+      <Avatar src={avatar} size={120} radius="md" mx="auto" />
       <Text align="center" size="lg" weight="bold" mt="md" mb={0}>
         {name}
       </Text>

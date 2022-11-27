@@ -255,7 +255,7 @@ export function Footer() {
       <Container className={classes.afterFooter}>
         <Stack spacing="xs" sx={{ width: '100%' }}>
           <Text size="sm" m={0}>
-            {new Date().getFullYear()} Grupo Cultural Adimó. CNPJ
+            {new Date().getFullYear()} Grupo Cultural Adimó. CNPJ{' '}
             {constants.cnpj}
           </Text>
           <Text size="sm" m={0}>

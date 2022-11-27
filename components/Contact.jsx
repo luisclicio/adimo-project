@@ -101,8 +101,7 @@ export function ContactSection({ ...props }) {
               'Picos',
             ].join(', ')}
             icon={<IconMapPin size={28} color="white" />}
-            // TODO: update coordinate
-            link="https://goo.gl/maps/A7qG9UqEwyC12wT37"
+            link={constants.address.googleMaps}
           />
 
           <ContactIcon

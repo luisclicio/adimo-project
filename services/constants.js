@@ -9,7 +9,8 @@ export const constants = {
     street: 'Rua Três de Maio',
     number: 822,
     neighborhood: 'Centro',
-    coordinates: [-7.0839, -41.47],
+    coordinates: [-7.083236, -41.46949],
+    googleMaps: 'https://goo.gl/maps/cfiJCi7o7sb6rLMq9',
   },
   social: {
     youtube: {
