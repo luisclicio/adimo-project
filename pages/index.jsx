@@ -24,15 +24,21 @@ import { ArticlesGrid } from '../components/ArticlesGrid';
 import { ContactSection } from '../components/Contact';
 
 import { hygraph } from '../services/hygraph';
-// Fake data
-import FAKE from '../services/fake';
 
-export default function Home({ activities = [], events = [], articles = [] }) {
+export default function Home({
+  featuredPhotos = [],
+  activities = [],
+  testimonials = [],
+  events = [],
+  articles = [],
+}) {
   return (
     <MainLayout title="Página Inicial">
-      <HeroSection carrouselImages={FAKE.carrouselImages} />
+      <HeroSection carrouselImages={featuredPhotos} />
       {activities.length > 0 && <ActivitiesSection activities={activities} />}
-      <TestimonialsSection testimonials={FAKE.testimonials} />
+      {testimonials.length > 0 && (
+        <TestimonialsSection testimonials={testimonials} />
+      )}
       {events.length > 0 && <EventsSection events={events} />}
       {articles.length > 0 && <ArticlesSection articles={articles} />}
       <ContactSection mt={64} />
@@ -91,6 +97,7 @@ const useHeroStyles = createStyles((theme) => ({
 
     [theme.fn.smallerThan('sm')]: {
       maxWidth: '100%',
+      maxHeight: '300px',
     },
   },
 }));
@@ -116,24 +123,28 @@ function HeroSection({ carrouselImages = [] }) {
         </Text>
       </div>
 
-      <Carousel
-        withControls={false}
-        withIndicators
-        loop
-        plugins={[autoplay.current]}
-        className={classes.carrousel}
-      >
-        {carrouselImages.map((image) => (
-          <Carousel.Slide key={image.url}>
-            <Image
-              src={image.url}
-              alt={image.caption}
-              fit="cover"
-              radius="md"
-            />
-          </Carousel.Slide>
-        ))}
-      </Carousel>
+      {carrouselImages.length > 0 && (
+        <Carousel
+          withControls={false}
+          withIndicators
+          loop
+          plugins={[autoplay.current]}
+          className={classes.carrousel}
+        >
+          {carrouselImages.map((image) => (
+            <Carousel.Slide key={image.id}>
+              <Image
+                src={image.url}
+                alt={image.caption}
+                fit="cover"
+                radius="md"
+                height="400px"
+                style={{ objectPosition: 'center ' }}
+              />
+            </Carousel.Slide>
+          ))}
+        </Carousel>
+      )}
     </Box>
   );
 }
@@ -194,7 +205,7 @@ function TestimonialsSection({ testimonials = [] }) {
       <AppGrid>
         {testimonials.map((testimonial) => (
           <TestimonialCard
-            key={testimonial.name}
+            key={testimonial.id}
             author={testimonial.author}
             content={testimonial.content}
           />
@@ -238,6 +249,14 @@ export async function getStaticProps() {
   const { data } = await hygraph.query({
     query: gql`
       query GetHomeData($now: DateTime!) {
+        featuredPhotos {
+          id
+          caption
+          image {
+            url
+          }
+        }
+
         activities(where: { isActive: true }) {
           id
           title
@@ -245,6 +264,16 @@ export async function getStaticProps() {
           coverImage {
             url
           }
+        }
+
+        testimonials {
+          id
+          authorName
+          authorRole
+          authorImage {
+            url
+          }
+          content
         }
 
         events(orderBy: publishedAt_DESC, where: { date_gt: $now }, first: 3) {
@@ -277,7 +306,21 @@ export async function getStaticProps() {
 
   return {
     props: {
+      featuredPhotos:
+        data?.featuredPhotos.map((featuredPhoto) => ({
+          ...featuredPhoto,
+          url: featuredPhoto.image?.url,
+        })) ?? [],
       activities: data?.activities ?? [],
+      testimonials:
+        data?.testimonials.map((testimonial) => ({
+          ...testimonial,
+          author: {
+            name: testimonial.authorName,
+            role: testimonial.authorRole,
+            image: testimonial.authorImage?.url,
+          },
+        })) ?? [],
       events: data?.events ?? [],
       articles: data?.posts ?? [],
     },

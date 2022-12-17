@@ -1,4 +1,4 @@
-import { Text, Avatar, Group, Stack, Paper } from '@mantine/core';
+import { Text, Avatar, Group, Stack, Paper, Spoiler } from '@mantine/core';
 
 export function TestimonialCard({ content, author }) {
   return (
@@ -21,7 +21,14 @@ export function TestimonialCard({ content, author }) {
         </Stack>
       </Group>
 
-      <Text mt="md">{content}</Text>
+      <Spoiler
+        mt="md"
+        maxHeight={224}
+        showLabel="Ver mais"
+        hideLabel="Ver menos"
+      >
+        {content}
+      </Spoiler>
     </Paper>
   );
 }
