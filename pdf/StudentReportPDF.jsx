@@ -119,6 +119,12 @@ export function StudentReportPDF({ student }) {
               {student?.fatherName && (
                 <InfoItem label="Pai" value={student.fatherName} />
               )}
+              {student?.phones.length > 0 && (
+                <InfoItem
+                  label="Telefone(s)"
+                  value={student?.phones.join(', ')}
+                />
+              )}
               {student?.neighborhood && (
                 <InfoItem label="Bairro" value={student.neighborhood} />
               )}

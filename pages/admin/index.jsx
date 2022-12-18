@@ -51,6 +51,12 @@ export default function Home() {
         sex
         birthdate
         email
+        phones
+        schooling
+        motherName
+        fatherName
+        address
+        neighborhood
         observations
         activities {
           id
@@ -231,11 +237,14 @@ function StudentCard({ student }) {
           {student?.fatherName && (
             <InfoItem label="Pai" value={student.fatherName} />
           )}
-          {student?.neighborhood && (
-            <InfoItem label="Bairro" value={student.neighborhood} />
+          {student?.phones.length > 0 && (
+            <InfoItem label="Telefone(s)" value={student?.phones.join(', ')} />
           )}
           {student?.address && (
             <InfoItem label="Endereço" value={student.address} />
+          )}
+          {student?.neighborhood && (
+            <InfoItem label="Bairro" value={student.neighborhood} />
           )}
           {student?.observations && (
             <InfoItem label="Observações" value={student.observations} />
@@ -261,7 +270,7 @@ function StudentCard({ student }) {
             </Stack>
           ) : (
             <Text m="0" mt="xs">
-              O aluno não está matriculado atividades.
+              O aluno não está matriculado em atividades.
             </Text>
           )}
         </Box>
