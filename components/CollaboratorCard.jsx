@@ -1,4 +1,4 @@
-import { Avatar, Text, Button, Paper } from '@mantine/core';
+import { Text, Button, Paper, Image } from '@mantine/core';
 
 export function CollaboratorCard({ avatar, name, role, followLink }) {
   return (
@@ -12,7 +12,14 @@ export function CollaboratorCard({ avatar, name, role, followLink }) {
         justifyContent: 'center',
       })}
     >
-      <Avatar src={avatar} size={120} radius="md" mx="auto" />
+      <Image
+        src={avatar}
+        alt={name}
+        fit="contain"
+        height={172}
+        radius="md"
+        mx="auto"
+      />
       <Text align="center" size="lg" weight="bold" mt="md" mb={0}>
         {name}
       </Text>
